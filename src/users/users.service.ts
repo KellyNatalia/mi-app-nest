@@ -5,8 +5,8 @@ import {IProducts, IUser} from 'src/interfaces';
 export class UsersService {
 
     private users: IUser [] = [
-        { id: 1, name: 'Elena', email: 'elena@gamil.com', password: '123' },
-        { id: 2, name: 'Jefferson', email: 'Pulido@gmail.com', password: 'asd' }
+        { id: 1, name: 'Elena', email: 'elena@gamil.com', password: '123', age: 23 },
+        { id: 2, name: 'Jefferson', email: 'Pulido@gmail.com', password: 'asd', age: 25 },
     ]
 
     findAll(): IUser[] {
