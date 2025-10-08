@@ -1,8 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { LoginDTO } from 'src/dto/login.dto';
 import {IProducts, IUser} from 'src/interfaces';
 
 @Injectable()
 export class UsersService {
+    login(data: LoginDTO) {
+        throw new Error('Method not implemented.');
+    }
 
     private users: IUser [] = [
         { id: 1, name: 'Elena', email: 'elena@gamil.com', password: '123', age: 23 },
