@@ -1,12 +1,20 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserDTO } from 'src/dto/create-user.dto';
 import { LoginDTO } from 'src/dto/login.dto';
+import { UpdateUserDTO } from 'src/dto/update-user.dto';
 import { User } from 'src/entities/user.entity';
 import {IProducts, IUser} from 'src/interfaces';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
+    remove(id: number) {
+        throw new Error('Method not implemented.');
+    }
+    update(arg0: number, body: UpdateUserDTO) {
+        throw new Error('Method not implemented.');
+    }
     login(data: LoginDTO) {
         throw new Error('Method not implemented.');
     }
@@ -20,30 +28,21 @@ export class UsersService {
         return this.usersRepo.find();
     }
 
-    // findOne(id: number): IUser {
-    //     const userFind = this.users.find((user) => user.id === id)
-    //     if (!userFind) throw new NotFoundException('usuario no encontrado')
-    //     return userFind
-    // }
+   async findOne(id: number) {
+        const userFind = await this.usersRepo.findOne({ where: { id } });
+        if (!userFind) throw new NotFoundException('usuario no encontrado')
+        return userFind
+    }
 
-    //  create(user: Omit<IUser, 'id'>): IUser {
-    //     const newId = this.users.length > 0 
-    //         ? this.users[this.users.length - 1].id + 1
-    //         : 1;
+     create(newUser: CreateUserDTO){
+        const userCreated = this.usersRepo.create(newUser);
+        return this.usersRepo.save(userCreated);
+     }
 
-    //     const newUser: IUser = {
-    //         id: newId, ...user
-    //     };
-
-    //     this.users.push(newUser);
-    //     return newUser;
-    // }   
-
-    // update(id:number, newUser: Omit<IUser, 'id'>): IUser {
-    //    const user = this.findOne(id);
-    //    Object.assign(user, newUser);
-    //    return user;
-    // }
+    async update(id: number, updateUser: UpdateUserDTO) {
+        await this.usersRepo.update(id, UpdateUse);
+        return this.findOne(id);
+    }
 
     // remove(id: number){
     //     const user = this.users.findIndex((user) => user.id === id);

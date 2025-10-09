@@ -4,7 +4,7 @@ import { LoginDTO } from 'src/dto/login.dto';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly usersService: UsersService) {}
+    // constructor(private readonly usersService: UsersService) {}
 
     // login(data: LoginDTO) {
     //     const users = this.usersService.findAll();

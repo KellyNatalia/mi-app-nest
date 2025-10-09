@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Pijama } from 'src/models/pijama.model';
 import { ProductsService } from './products.service';
 import { CreateProductDTO } from 'src/dto/create-product.dto';
+import {  ParseUpperTrimPipe } from 'src/common/pipes/parse-uppertrim.pipe';
 
 @Controller('products')
 export class ProductsController {
@@ -17,6 +18,12 @@ export class ProductsController {
         return this.productsService.findOne(Number(id));
     }
 
+    @Get('by-name/:name') //La ruta es http://localhost:3000/products/by-name/perro
+    findByName(@Param('name', ParseUpperTrimPipe) name: string) {
+        return this.productsService.findByName(name);
+    }
+
+    @UseGuards(JwtAuthGuard)
     @Post()
     createProduct(@Body() body: CreateProductDTO) {
         return this.productsService.create(body);
@@ -62,5 +69,9 @@ export class ProductsController {
     }
 
 
+
+
+   
+ 
 }
 
