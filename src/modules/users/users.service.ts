@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDTO } from 'src/dto/create-user.dto';
 import { LoginDTO } from 'src/dto/login.dto';
 import { UpdateUserDTO } from 'src/dto/update-user.dto';
+import { UserDTO } from 'src/dto/userDTO';
 import { User } from 'src/entities/user.entity';
 import { IProducts, IUser } from 'src/interfaces';
 import { Repository } from 'typeorm';
@@ -18,8 +19,16 @@ export class UsersService {
         private usersRepo: Repository<User>
     ) { }
 
-    findAll() {
-        return this.usersRepo.find();
+        findAll() {
+        return this.usersRepo.find()
+        .then((users) => users
+        .map((user) => {
+            const userDTO = new UserDTO();
+            userDTO.name = user.name;
+            userDTO.email = user.email;
+            userDTO.age = user.age;
+            return userDTO;
+        }));
     }
 
     async findOne(id: number) {

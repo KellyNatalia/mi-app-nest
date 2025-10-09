@@ -1,9 +1,7 @@
-import { IsNotEmpty, isNotEmpty } from "class-validator";
-import  { ColumnOptions, Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
-export class ProductDTO {
-    @IsNotEmpty()
+export class Product {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -23,7 +21,5 @@ export class ProductDTO {
     status: boolean;
 
     @Column({ nullable: false }) 
-    stock: number;
-
-    
+    stock: number;    
 }
