@@ -14,4 +14,12 @@ export class CreateProductDTO {
 
      @IsNotEmpty()
      size: string;
+
+     @IsNotEmpty()
+     status: boolean;
+
+     @IsNotEmpty()
+     stock: number;
+
+
 }

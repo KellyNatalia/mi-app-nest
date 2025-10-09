@@ -1,77 +1,45 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { Pijama } from 'src/models/pijama.model';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDTO } from 'src/dto/create-product.dto';
-import {  ParseUpperTrimPipe } from 'src/common/pipes/parse-uppertrim.pipe';
+import { UpdateProductDTO } from 'src/dto/update-product.dto';
+import { JwtAuthGuard } from '../auth/jwt.guard';
+import { ParseUpperTrimPipe } from 'src/common/pipes/parse-uppertrim.pipe';
 
 @Controller('products')
 export class ProductsController {
-    constructor(private readonly productsService: ProductsService) {}
+    constructor(private readonly productsService: ProductsService) { }
 
     @Get()
-    getAllProducts() {
+    encontrarTodos() {
         return this.productsService.findAll();
     }
 
     @Get(':id')
-    getOneProductId(@Param('id') id: string) {
-        return this.productsService.findOne(Number(id));
+    encontrarUnoPorId(@Param('id') id: string) {
+        return this.productsService.findOne(Number(id))
     }
 
-    @Get('by-name/:name') //La ruta es http://localhost:3000/products/by-name/perro
+    @Get('by-name/:name') 
     findByName(@Param('name', ParseUpperTrimPipe) name: string) {
         return this.productsService.findByName(name);
     }
 
+
     @UseGuards(JwtAuthGuard)
     @Post()
-    createProduct(@Body() body: CreateProductDTO) {
+    crear(@Body() body: CreateProductDTO) {
         return this.productsService.create(body);
     }
 
-    @Get('mi-tienda/productos')
-    getProducts() {
-        const pijamaShort: Pijama = {
-            id: 1,
-            name: 'Pijama Short',
-            price: 100000,
-            description: 'Pijama corto',
-            size: 'M'
-        }
-
-        const pijamaPantalon: Pijama = {
-            id: 2,
-            name: 'Pijama Pantalón',
-            price: 200000,
-            description: 'Pijama largo',
-            size: 'L'
-        }
-
-        const pijamaVestido: Pijama = {
-            id: 3,
-            name: 'Pijama Vestido',
-            price: 300000,
-            description: 'Pijama largo',
-            size: 'L'
-        }
-
-
-        const products = [pijamaShort, pijamaPantalon, pijamaVestido];
-        return products;
-
-
+    @UseGuards(JwtAuthGuard)
+    @Put(':id')
+    actualizar(@Param('id') id: string, @Body() body: UpdateProductDTO) {
+        return this.productsService.update(Number(id), body)
     }
 
-    
-    @Get('mi-tienda/precios')
-    getPrices() {
-        return 'Mi tienda';
+    @UseGuards(JwtAuthGuard)
+    @Delete(':id')
+    borrar(@Param('id') id: string) {
+        return this.productsService.remove(Number(id))
     }
-
-
-
-
-   
- 
 }
-
